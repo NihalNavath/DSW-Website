@@ -3,3 +3,7 @@
 
  WIP - Work in process
 will be stable soon.
+
+
+__Invite__
+ https://infinitybotlist.com/bots/658566989077544970/widget?size=small
