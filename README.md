@@ -5,5 +5,5 @@
 will be stable soon.
 
 
-__Invite__
- https://infinitybotlist.com/bots/658566989077544970/widget?size=small
+__Invite__<br>
+ <img src = "https://infinitybotlist.com/bots/658566989077544970/widget?size=small"></img>
