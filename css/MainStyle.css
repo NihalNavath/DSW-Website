@@ -232,5 +232,8 @@ color: rgba(255, 255, 255, 0.46)
   }
   .features-card-container .cards-text-cont {
     padding-left: 0;
-}
+  }
+  .heading {
+    padding: 80px 50px;
+  }
 }
