@@ -118,9 +118,6 @@ body {
     flex-direction: column;
 }
 
-.features-card-container img{
-    max-width: 30rem;
-}
 
 .features-card-flex-right{
   display: flex;
@@ -138,12 +135,7 @@ body {
   margin: 10%;
 }
 
-.features-card-container img{
-  min-width: 13rem;
-}
-
 .features-card-container .cards-text-cont{
-  max-width: 80%;
   padding-left: 50px;
 }
 
