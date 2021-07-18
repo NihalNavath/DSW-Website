@@ -1,0 +1,36 @@
+.nav-link {
+	font-size: 14px;
+	background: transparent;
+	font-family: Lato, sans-serif;
+	text-transform: capitalize;
+}
+.nav-link:hover {
+	background: transparent;
+	color: #ffa500;
+	font-weight: bold;
+}
+
+.login-btn {
+	border: 2px solid #f6f9ff;
+	font-size: 10px;
+}
+.login-btn:hover {
+	background: #ffa500;
+}
+.navbar {
+	box-shadow: none;
+
+	background-color: #1d1e28;
+}
+
+.navbar-brand {
+	font-size: 25px;
+}
+
+.navbar-toggler-icon {
+	color: #fff;
+}
+
+.menu-button {
+	background: white;
+}
