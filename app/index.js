@@ -1,7 +1,7 @@
 const express = require("express");
 const path = require('path')
 const { RateLimiterMemory } = require('rate-limiter-flexible');
-const customLogger = require('./logger.js')
+//const customLogger = require('./logger.js')
 const dotenv = require("dotenv")
 const { MongoClient, Long } = require('mongodb');
 const { performance } = require('perf_hooks');
