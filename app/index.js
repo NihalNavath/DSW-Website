@@ -23,7 +23,7 @@ dotenv.config()
 const app = express()
 app.use(express.static('../public/html', { extensions: ["html"] }))
 app.use(express.static('../public'))
-customLogger.dcsLog({"body": "Started", "title": "test"})
+//customLogger.dcsLog({"body": "Started", "title": "test"})
 
 const URL = process.env.mongourl
 const mongoClient = new MongoClient(URL, { useNewUrlParser: true, useUnifiedTopology: true });
