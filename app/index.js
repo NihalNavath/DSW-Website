@@ -15,7 +15,7 @@ axios.interceptors.request.use(AxiosLogger.requestLogger)
 
 axios.interceptors.response.use(AxiosLogger.responseLogger)
 
-const PORT = process.env.port || 3000
+const PORT = process.env.port || 80
 
 //Boolean serverReady = false
 
