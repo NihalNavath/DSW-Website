@@ -1,5 +1,7 @@
 # DSW-Website
 
+http://dsw.nihalnavath.com
+
 The official website repo for the discord bot <DSW>.
 
 WIP - Work in process
