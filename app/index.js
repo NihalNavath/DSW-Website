@@ -105,7 +105,6 @@ async function getGlb(inName) {
         timeDiff = timeDiff /= 1000;
         console.log(timeDiff)
         if (timeDiff < 300) {
-            console.log("using cache")
             return glbNamesCache[0]
         }
         for (const data of glb) {
@@ -182,7 +181,7 @@ app.get('/api/stats', async (req, res) => {
 });
 
 app.get('/api/login', async (req, res) => {
-    //begad is segssy (and so is Nihal)
+    //begad is segsy (and so is Nihal)
     const code = req.query.code
     if (code == null || code == "") {
         return res.redirect("/")
@@ -209,7 +208,7 @@ app.get('/api/login', async (req, res) => {
     })
     .catch((err) => { 
         console.log(err) //todo send error page to client
-        res.send("Some error occured, contact nihal pez.") 
+        res.send("Some error occurred, contact nihal pez.") 
     })
                 
     

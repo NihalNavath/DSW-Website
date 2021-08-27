@@ -13,6 +13,9 @@
 #nihalifik modules
 *.nihalifik
 
+# secrets
+*.env
+
 # misc
 .DS_Store
 .env.local
