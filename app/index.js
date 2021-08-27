@@ -15,11 +15,12 @@ axios.interceptors.request.use(AxiosLogger.requestLogger)
 
 axios.interceptors.response.use(AxiosLogger.responseLogger)
 
+dotenv.config()
+
 const PORT = process.env.port || 3000
 
 //Boolean serverReady = false
 
-dotenv.config()
 const app = express()
 app.use(express.static('../public/html', { extensions: ["html"] }))
 app.use(express.static('../public'))
