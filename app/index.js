@@ -30,33 +30,33 @@ const URL = process.env.mongourl
 const mongoClient = new MongoClient(URL, { useNewUrlParser: true, useUnifiedTopology: true });
 
 const rateLimiter = new RateLimiterMemory({
-  points: 3,
-  duration: 1,
+    points: 3,
+    duration: 1,
 });
 
 const rateLimiterMiddleware = (req, res, next) => {
-  rateLimiter.consume(req.ip)
-    .then(() => {
-      next();
-    })
-    .catch(() => {
-        res.set({
-            "Retry-After": rateLimiterRes.msBeforeNext / 1000,
-            "X-RateLimit-Limit": 3,
-            "X-RateLimit-Remaining": rateLimiterRes.remainingPoints,
-            "X-RateLimit-Reset": new Date(Date.now() + rateLimiterRes.msBeforeNext)
+    rateLimiter.consume(req.ip)
+        .then(() => {
+            next();
+        })
+        .catch(() => {
+            res.set({
+                "Retry-After": rateLimiter.msBeforeNext / 1000,
+                "X-RateLimit-Limit": 3,
+                "X-RateLimit-Remaining": rateLimiter.remainingPoints,
+                "X-RateLimit-Reset": new Date(Date.now() + rateLimiter.msBeforeNext)
+            });
+            res.status(429).json({ "error": "Rate limited, Too many requests." });
         });
-        res.status(429).json({ "error": "Rate limited, Too many requests."});
-    });
 };
 
 app.use(rateLimiterMiddleware)
 
 async function connect() {
-    await mongoClient.connect(); 
+    await mongoClient.connect();
     await mongoClient.db("new").command({ ping: 1 });
     console.log("Connected successfully to DSW's db and fetched main collection.");
-    
+
     const database = mongoClient.db("database"); //todo use env
     collection = database.collection("new");
     systemsCollection = database.collection("system");
@@ -68,7 +68,7 @@ function bigIntToLong(bigint) {
 }
 
 async function fetchUserInfo(userid, filter) {
-    const deleteList = ["notifications","Inventory","cooldown","settings"]
+    const deleteList = ["notifications", "Inventory", "cooldown", "settings"]
     const result = await collection.findOne({ "userid": bigIntToLong(BigInt(userid)) });
     if (result) {
         for (const property of deleteList) {
@@ -79,7 +79,7 @@ async function fetchUserInfo(userid, filter) {
 };
 
 async function getBotStats() {
-    const result = await systemsCollection.findOne({"type":"stats"})
+    const result = await systemsCollection.findOne({ "type": "stats" })
     return result;
 }
 
@@ -102,24 +102,21 @@ async function getGlb(inName) {
     } else {
         const result = []
         var timeDiff = performance.now() - glbNamesCache[1];
-        console.log(timeDiff)
         timeDiff = timeDiff /= 1000;
-        console.log(timeDiff)
         if (timeDiff < 300) {
             return glbNamesCache[0]
         }
         for (const data of glb) {
-            console.log(data.Amount)
             await axios.get(`https://discord.com/api/users/${data.userid}`, {
                 headers: {
                     "Authorization": process.env.discordAPIAuth
                 }
             })
                 .then(function (response) {
-                    result.push({ 
-                                "name":  response.data.username,
-                                "Amount": data.Amount
-                                })
+                    result.push({
+                        "name": response.data.username,
+                        "Amount": data.Amount
+                    })
                 })
                 .catch(function (error) {
                     console.log(error);
@@ -127,7 +124,7 @@ async function getGlb(inName) {
                 })
         }
         glbNamesCache = []
-        glbNamesCache.push(result , performance.now())
+        glbNamesCache.push(result, performance.now())
         return result
     }
 }
@@ -139,8 +136,7 @@ async function processData(oauthData) {
             authorization: `${oauthData.token_type} ${oauthData.access_token}`,
         }
     }
-    const userResult = await axios.get(url,config)
-    console.log(userResult.data)
+    const userResult = await axios.get(url, config)
 };
 
 app.get('/api', (req, res) => {
@@ -151,7 +147,7 @@ app.get('/api/user/:userid', async (req, res) => {
     let notValid = checkInvalidDiscordID(req.params.userid);
     if (notValid) {
         return res.status(400).json({ "error": notValid });
-    } 
+    }
     const result = await fetchUserInfo(req.params.userid);
     if (!result) {
         const error = "User associated with that id doesn't seem to be in our database.";
@@ -175,19 +171,18 @@ app.get('/api/glb', async (req, res) => {
 app.get('/api/stats', async (req, res) => {
     const result = await getBotStats();
     if (result) {
-        res.json({ "guilds": result.guildCount, "members": result.memberCount, "commands": result.commandsCount});
+        res.json({ "guilds": result.guildCount, "members": result.memberCount, "commands": result.commandsCount });
     } else {
-        return res.status(500).json({ "error": "Internal Database Error."})
+        return res.status(500).json({ "error": "Internal Database Error." })
     }
 });
 
 app.get('/api/login', async (req, res) => {
-    //begad is segsy (and so is Nihal)
     const code = req.query.code
     if (code == null || code == "") {
         return res.redirect("/")
     }
- 
+
     const url = "https://discord.com/api/oauth2/token"
     const params = new URLSearchParams();
     params.append("client_id", "658566989077544970")
@@ -195,24 +190,24 @@ app.get('/api/login', async (req, res) => {
     params.append("grant_type", "authorization_code")
     params.append("code", code)
     params.append("redirect_uri", 'http://localhost:3000/api/login')
-    
+
     const config = {
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded'
         }
     }
     axios.post(url, params, config)
-    .then((result) => {
-        processData(result.data)
-        console.log("got result")
-        res.json(result.data)
-    })
-    .catch((err) => { 
-        console.log(err) //todo send error page to client
-        res.send("Some error occurred, contact nihal pez.") 
-    })
-                
-    
+        .then((result) => {
+            processData(result.data)
+            console.log("got result")
+            res.json(result.data)
+        })
+        .catch((err) => {
+            console.log(err) //todo send error page to client
+            res.send("Some error occurred, contact nihal pez.")
+        })
+
+
 });
 
-app.listen(PORT , () => console.log(`Listening on port ${PORT} baby!`))
+app.listen(PORT, () => console.log(`Listening on port ${PORT} baby!`))
